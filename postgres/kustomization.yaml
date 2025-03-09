@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+secretGenerator:
+  - name: postgres-secret
+    namespace: postgres
+    envs:
+      - .env
+
+images:
+  - name: postgres
+    newName: postgres
+    newTag: "17.4"
+
+resources:
+  - pvc.yaml
+  - deployment.yaml
+  - service.yaml
