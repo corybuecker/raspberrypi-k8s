@@ -1,0 +1,10 @@
+providers:
+  kubernetesGateway:
+    enabled: true
+  kubernetesIngress:
+    enabled: false
+prometheus: {}
+gateway:
+  listeners:
+    web:
+      namespacePolicy: All
