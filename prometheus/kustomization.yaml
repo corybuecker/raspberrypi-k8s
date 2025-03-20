@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+images:
+  - name: prometheus
+    newName: prom/prometheus
+    newTag: "v3.2.1"
+
+resources:
+  - role.yaml
+  - deployment.yaml
+  - service.yaml
+  - pvc.yaml
+
+configMapGenerator:
+- name: prometheus-config
+  namespace: prometheus
+  files:
+  - prometheus.yml

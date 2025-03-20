@@ -3,7 +3,6 @@ providers:
     enabled: true
   kubernetesIngress:
     enabled: false
-prometheus: {}
 gateway:
   listeners:
     web:
