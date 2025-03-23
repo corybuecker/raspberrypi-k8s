@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: prometheus
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: prometheus
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      serviceAccountName: default
+      containers:
+        - name: prometheus
+          image: prometheus
+          volumeMounts:
+          - name: prometheus
+            mountPath: /prometheus  
+          - name: config
+            mountPath: /etc/prometheus
+          ports:
+            - containerPort: 9090
+      volumes:
+        - name: prometheus
+          persistentVolumeClaim:
+            claimName: prometheus-storage
+        - name: config
+          configMap:
+            name: prometheus-config
