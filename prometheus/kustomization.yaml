@@ -7,6 +7,7 @@ images:
     newTag: "v3.2.1"
 
 resources:
+  - namespace.yaml
   - role.yaml
   - deployment.yaml
   - service.yaml

@@ -15,19 +15,42 @@ spec:
       labels:
         app: prometheus
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        seccompProfile:
+          type: RuntimeDefault
       serviceAccountName: default
       containers:
         - name: prometheus
           image: prometheus
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           volumeMounts:
-          - name: prometheus
-            mountPath: /prometheus  
-          - name: config
-            mountPath: /etc/prometheus
+            - name: storage
+              mountPath: /prometheus
+            - name: config
+              mountPath: /etc/prometheus
+          args:
+            [
+              "--config.file=/etc/prometheus/prometheus.yml",
+              "--storage.tsdb.path=/prometheus",
+              "--storage.tsdb.retention.size=1600MB",
+            ]
           ports:
             - containerPort: 9090
+          resources:
+            limits:
+              cpu: 100m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 512Mi
       volumes:
-        - name: prometheus
+        - name: storage
           persistentVolumeClaim:
             claimName: prometheus-storage
         - name: config
