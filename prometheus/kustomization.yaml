@@ -5,11 +5,15 @@ images:
   - name: prometheus
     newName: prom/prometheus
     newTag: "v3.2.1"
+  - name: grafana
+    newName: grafana/grafana-oss
+    newTag: "11.6.0"
 
 resources:
   - namespace.yaml
   - role.yaml
-  - deployment.yaml
+  - deployments/prometheus.yaml
+  - deployments/grafana.yaml
   - service.yaml
   - pvc.yaml
 
