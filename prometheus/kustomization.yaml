@@ -14,7 +14,8 @@ resources:
   - role.yaml
   - deployments/prometheus.yaml
   - deployments/grafana.yaml
-  - service.yaml
+  - services/grafana.yaml
+  - services/prometheus.yaml
   - pvc.yaml
 
 configMapGenerator:
