@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+images:
+  - name: jaeger
+    newName: jaegertracing/jaeger
+    digest: "sha256:20d715ade1cf32e8c2be1a288317c2126376ce60811be71f0856793d7f849127"
+
+resources:
+  - namespace.yaml
+  - deployment.yaml
+  - service.yaml

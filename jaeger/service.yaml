@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger
+  namespace: jaeger
+spec:
+  selector:
+    app: jaeger
+  ports:
+    - name: ingestion
+      protocol: TCP
+      port: 4318
+    - name: interface
+      protocol: TCP
+      port: 16686
