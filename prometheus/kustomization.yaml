@@ -4,7 +4,7 @@ kind: Kustomization
 images:
   - name: prometheus
     newName: prom/prometheus
-    newTag: "v3.2.1"
+    newTag: "v3.3.0"
   - name: grafana
     newName: grafana/grafana-oss
     newTag: "11.6.0"
@@ -19,7 +19,7 @@ resources:
   - pvc.yaml
 
 configMapGenerator:
-- name: prometheus-config
-  namespace: prometheus
-  files:
-  - prometheus.yml
+  - name: prometheus-config
+    namespace: prometheus
+    files:
+      - prometheus.yaml
