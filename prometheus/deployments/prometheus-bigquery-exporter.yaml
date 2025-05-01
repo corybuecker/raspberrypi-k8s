@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: prometheus
+  name: prometheus-bigquery-exporter
   namespace: prometheus
 spec:
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: prometheus
+      app: prometheus-bigquery-exporter
   replicas: 1
   template:
     metadata:
       labels:
-        app: prometheus
+        app: prometheus-bigquery-exporter
     spec:
       securityContext:
         runAsNonRoot: true
@@ -22,27 +22,26 @@ spec:
           type: RuntimeDefault
       serviceAccountName: default
       containers:
-        - name: prometheus
-          image: prometheus
+        - name: prometheus-bigquery-exporter
+          image: prometheus-bigquery-exporter
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
               drop:
                 - ALL
+          env:
+            - name: PROMBQ_DATASET
+              value: prometheus
+            - name: PROMBQ_TABLE
+              value: metrics
+            - name: PROMBQ_GCP_JSON
+              value: /service-account-gcp/service-account-gcp.json
           volumeMounts:
-            - name: storage
-              mountPath: /prometheus
-            - name: config
-              mountPath: /etc/prometheus
-          args:
-            [
-              "--config.file=/etc/prometheus/prometheus.yaml",
-              "--storage.tsdb.path=/prometheus",
-              "--storage.tsdb.retention.size=1600MB",
-              "--web.enable-otlp-receiver",
-            ]
+            - mountPath: /service-account-gcp
+              name: service-account-gcp
+              readOnly: true
           ports:
-            - containerPort: 9090
+            - containerPort: 9201
           resources:
             limits:
               cpu: 100m
@@ -51,9 +50,6 @@ spec:
               cpu: 100m
               memory: 512Mi
       volumes:
-        - name: storage
-          persistentVolumeClaim:
-            claimName: prometheus-storage
-        - name: config
-          configMap:
-            name: prometheus-config
+        - name: service-account-gcp
+          secret:
+            secretName: service-account-gcp

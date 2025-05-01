@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-bigquery-exporter
+  namespace: prometheus
+spec:
+  selector:
+    app: prometheus-bigquery-exporter
+  ports:
+    - protocol: TCP
+      port: 9201
+      targetPort: 9201
