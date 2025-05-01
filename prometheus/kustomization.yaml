@@ -8,14 +8,19 @@ images:
   - name: grafana
     newName: grafana/grafana-oss
     newTag: "11.6.0"
+  - name: prometheus-bigquery-exporter
+    newName: quay.io/kohlstechnology/prometheus_bigquery_remote_storage_adapter
+    newTag: "v0.8.0"
 
 resources:
   - namespace.yaml
   - role.yaml
   - deployments/prometheus.yaml
+  - deployments/prometheus-bigquery-exporter.yaml
   - deployments/grafana.yaml
   - services/grafana.yaml
   - services/prometheus.yaml
+  - services/prometheus-bigquery-exporter.yaml
   - pvc.yaml
 
 configMapGenerator:
@@ -23,3 +28,9 @@ configMapGenerator:
     namespace: prometheus
     files:
       - prometheus.yaml
+
+secretGenerator:
+  - name: service-account-gcp
+    namespace: prometheus
+    files:
+      - service-account-gcp.json
