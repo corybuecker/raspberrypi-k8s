@@ -10,10 +10,10 @@ secretGenerator:
 images:
   - name: postgres-alpha
     newName: postgres
-    newTag: "17.4"
+    newTag: "17.5"
   - name: postgres-beta
     newName: postgres
-    newTag: "17.4"
+    newTag: "17.5"
 
 resources:
   - namespace.yaml

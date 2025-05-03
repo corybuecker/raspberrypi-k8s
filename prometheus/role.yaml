@@ -4,20 +4,14 @@ metadata:
   name: prometheus
   namespace: prometheus
 rules:
-- apiGroups: [""]
-  resources:
-  - nodes
-  - nodes/metrics
-  - services
-  - endpoints
-  - pods
-  verbs: ["get", "list", "watch"]
-- apiGroups: [""]
-  resources:
-  - configmaps
-  verbs: ["get"]
-- nonResourceURLs: ["/metrics"]
-  verbs: ["get"]
+  - apiGroups: [""]
+    resources:
+      - nodes
+      - nodes/metrics
+      - pods
+    verbs: ["get", "list", "watch"]
+  - nonResourceURLs: ["/metrics"]
+    verbs: ["get"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -29,6 +23,6 @@ roleRef:
   kind: ClusterRole
   name: prometheus
 subjects:
-- kind: ServiceAccount
-  name: default
-  namespace: prometheus
+  - kind: ServiceAccount
+    name: default
+    namespace: prometheus
