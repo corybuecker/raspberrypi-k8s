@@ -8,10 +8,7 @@ secretGenerator:
       - .env
 
 images:
-  - name: postgres-alpha
-    newName: postgres
-    newTag: "17.5"
-  - name: postgres-beta
+  - name: postgres
     newName: postgres
     newTag: "17.5"
 
