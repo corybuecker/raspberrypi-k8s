@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres-alpha
+  name: postgres
   namespace: postgres
 spec:
   selector:
     matchLabels:
-      app: postgres-alpha
+      app: postgres
   replicas: 1
   template:
     metadata:
       labels:
-        app: postgres-alpha
+        app: postgres
     spec:
       containers:
         - name: postgres
-          image: postgres-alpha
+          image: postgres
           volumeMounts:
-            - name: postgres-alpha
+            - name: postgres
               mountPath: /var/lib/postgresql/data
           ports:
             - containerPort: 5432
@@ -32,44 +32,6 @@ spec:
             - secretRef:
                 name: postgres-secret
       volumes:
-        - name: postgres-alpha
-          persistentVolumeClaim:
-            claimName: postgres-alpha
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: postgres-beta
-  namespace: postgres
-spec:
-  selector:
-    matchLabels:
-      app: postgres-beta
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: postgres-beta
-    spec:
-      containers:
         - name: postgres
-          image: postgres-beta
-          volumeMounts:
-            - name: postgres-beta
-              mountPath: /var/lib/postgresql/data
-          ports:
-            - containerPort: 5432
-          resources:
-            limits:
-              cpu: 200m
-              memory: 256Mi
-            requests:
-              cpu: 200m
-              memory: 256Mi
-          envFrom:
-            - secretRef:
-                name: postgres-secret
-      volumes:
-        - name: postgres-beta
           persistentVolumeClaim:
-            claimName: postgres-beta
+            claimName: postgres

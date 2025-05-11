@@ -8,12 +8,9 @@ secretGenerator:
       - .env
 
 images:
-  - name: postgres-alpha
+  - name: postgres
     newName: postgres
-    newTag: "17.4"
-  - name: postgres-beta
-    newName: postgres
-    newTag: "17.4"
+    newTag: "17.5"
 
 resources:
   - namespace.yaml

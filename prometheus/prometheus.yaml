@@ -1,20 +1,17 @@
-# my global config
 global:
-  scrape_interval: 10s
+  scrape_interval: 30s
 
 scrape_configs:
-  - job_name: prometheus
-    static_configs:
-      - targets:
-          - localhost:9090
-
   - job_name: node
     static_configs:
       - targets:
           - node-exporter.node-exporter.svc.cluster.local:9100
 
-  - job_name: "kubernetes-cadvisor"
+  - job_name: kubernetes-cadvisor
     scheme: https
+    relabel_configs:
+      - action: labelmap
+        regex: __meta_kubernetes_node_label_(.+)
     metrics_path: /metrics/cadvisor
     tls_config:
       ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
@@ -23,5 +20,15 @@ scrape_configs:
     kubernetes_sd_configs:
       - role: node
 
-remote_write:
-  - url: http://prometheus-bigquery-exporter:9201/write
+  - job_name: "analytics-collector"
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      - source_labels:
+          - __meta_kubernetes_pod_name
+        action: keep
+        regex: "analytics-collector-.*"
+      - source_labels:
+          - __meta_kubernetes_pod_container_port_number
+        regex: "8001"
+        action: keep
