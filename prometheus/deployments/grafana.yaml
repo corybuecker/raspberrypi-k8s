@@ -15,12 +15,12 @@ spec:
       labels:
         app: grafana
     spec:
+      automountServiceAccountToken: false
       securityContext:
         runAsNonRoot: true
         runAsUser: 65534
         seccompProfile:
           type: RuntimeDefault
-      serviceAccountName: default
       containers:
         - name: grafana
           image: grafana
@@ -29,6 +29,9 @@ spec:
             capabilities:
               drop:
                 - ALL
+          volumeMounts:
+            - name: storage
+              mountPath: /var/lib/grafana
           ports:
             - containerPort: 3000
           resources:
@@ -38,3 +41,10 @@ spec:
             requests:
               cpu: 100m
               memory: 512Mi
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: prometheus-storage
+        - name: config
+          configMap:
+            name: prometheus-config

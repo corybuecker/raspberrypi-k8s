@@ -10,7 +10,7 @@ secretGenerator:
 images:
   - name: postgres
     newName: postgres
-    newTag: "17.5"
+    digest: "sha256:6cf6142afacfa89fb28b894d6391c7dcbf6523c33178bdc33e782b3b533a9342"
 
 resources:
   - namespace.yaml

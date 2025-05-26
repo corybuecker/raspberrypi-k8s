@@ -15,12 +15,13 @@ spec:
       labels:
         app: prometheus
     spec:
+      serviceAccountName: default
+      automountServiceAccountToken: true
       securityContext:
         runAsNonRoot: true
         runAsUser: 65534
         seccompProfile:
           type: RuntimeDefault
-      serviceAccountName: default
       containers:
         - name: prometheus
           image: prometheus
