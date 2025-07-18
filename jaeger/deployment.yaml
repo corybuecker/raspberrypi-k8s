@@ -16,11 +16,17 @@ spec:
       containers:
         - name: jaeger
           image: jaeger
+          args:
+            - --config
+            - /jaeger-config/all-in-one.yaml
           ports:
             - name: ingestion
               containerPort: 4318
             - name: interface
               containerPort: 16686
+          volumeMounts:
+            - name: jaeger-config
+              mountPath: /jaeger-config
           resources:
             limits:
               cpu: 100m
@@ -28,3 +34,7 @@ spec:
             requests:
               cpu: 100m
               memory: 256Mi
+      volumes:
+        - name: jaeger-config
+          configMap:
+            name: all-in-one

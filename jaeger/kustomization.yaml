@@ -4,9 +4,15 @@ kind: Kustomization
 images:
   - name: jaeger
     newName: jaegertracing/jaeger
-    digest: "sha256:9b29aad1b65cd61016428ec15f3e04d75d4969f3551977d4fbed5acc4c85ec8c"
+    digest: "sha256:af1598dfd0a7800a370e88064e24c5d562cfcbbd2c2748e6ae1f1126be88dd4b"
 
 resources:
   - namespace.yaml
   - deployment.yaml
   - service.yaml
+
+configMapGenerator:
+  - name: all-in-one
+    namespace: jaeger
+    files:
+      - all-in-one.yaml
