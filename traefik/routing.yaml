@@ -1,9 +1,0 @@
-providers:
-  kubernetesGateway:
-    enabled: true
-  kubernetesIngress:
-    enabled: false
-gateway:
-  listeners:
-    web:
-      namespacePolicy: All
