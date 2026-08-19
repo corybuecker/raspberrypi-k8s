@@ -1,0 +1,4 @@
+# /etc/rancher/k3s/config.yaml
+kube-apiserver-arg:
+  - "service-account-issuer=https://k8s.corybuecker.dev"
+  - "service-account-jwks-uri=https://k8s.corybuecker.dev/openid/v1/jwks"

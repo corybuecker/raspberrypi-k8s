@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pod-identity-webhook
+  namespace: pod-identity-webhook
+  labels:
+    app: pod-identity-webhook
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: pod-identity-webhook
+  template:
+    metadata:
+      labels:
+        app: pod-identity-webhook
+    spec:
+      serviceAccountName: pod-identity-webhook
+      securityContext:
+        runAsNonRoot: true
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: pod-identity-webhook
+          image: public.ecr.aws/eks/amazon-eks-pod-identity-webhook:7bb1792
+          command:
+            - /webhook
+            - --in-cluster=false
+            - --namespace=pod-identity-webhook
+            - --service-name=pod-identity-webhook
+            - --token-audience=sts.amazonaws.com
+            - --logtostderr
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: certificate
+              mountPath: /etc/webhook/certs
+              readOnly: true
+          securityContext:
+            runAsUser: 65534
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+      volumes:
+        - name: certificate
+          secret:
+            secretName: pod-identity-webhook-certificate
